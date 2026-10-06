@@ -53,8 +53,8 @@ export function Header() {
     <>
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:p-2">Skip to content</a>
       <div className="sticky top-0 z-40 bg-[#f6f6f8]/85 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-          <Link href="/" className="tap text-xl font-extrabold sm:text-2xl tracking-tight text-brand-700">{site.name}</Link>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:py-4">
+          <Link href="/" className="tap text-[1.375rem] font-extrabold leading-none tracking-tight text-brand-700 sm:text-2xl">{site.name}</Link>
           <nav aria-label="Primary" className="hidden items-center gap-1 text-[15px] font-medium lg:flex">
             {menus.map((m) => (
               <div key={m.label} className="menu relative">
@@ -76,7 +76,7 @@ export function Header() {
             <Link href="/case-studies" className="rounded-full px-4 py-2 hover:bg-white">Client Successes</Link>
             <Link href="/pricing" className="rounded-full px-4 py-2 hover:bg-white">Pricing</Link>
           </nav>
-          <div className="flex items-center gap-2 text-sm font-semibold">
+          <div className="flex items-center gap-2 text-sm font-semibold max-sm:gap-2.5">
             {logins.length > 0 && <div className="menu relative hidden lg:block">
               <button type="button" aria-haspopup="true" className="flex items-center gap-1.5 rounded-full border border-brand-700/30 px-5 py-2.5 hover:bg-white">Log in<Chevron /></button>
               <div className="menu-panel absolute right-0 top-full z-50 w-72 pt-2">
@@ -91,7 +91,7 @@ export function Header() {
                 </ul>
               </div>
             </div>}
-            <Link href="/contact" className="rounded-full bg-brand-700 px-4 py-3 text-white transition hover:bg-brand-500 sm:px-6">Book a call</Link>
+            <Link href="/contact" className="tap rounded-full bg-brand-700 px-3.5 py-2 text-[13px] text-white transition hover:bg-brand-500 sm:px-6 sm:py-3 sm:text-sm">Book a call</Link>
             <MobileNav menus={menus} logins={logins.map((l) => ({ label: l.label, desc: l.desc, href: l.href }))} joins={joins} />
           </div>
         </div>

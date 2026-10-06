@@ -25,12 +25,18 @@ body { color: var(--color-ink); background: #f6f6f8; font-family: var(--font-san
 
 /* ── pill button with arrow circle ── */
 .pill { display: inline-flex; align-items: center; gap: .75rem; border-radius: 9999px; background: var(--color-brand-700); color: #fff;
-  padding: .35rem .35rem .35rem 1.5rem; font-weight: 600; transition: background .2s, transform .2s, box-shadow .2s; }
+  padding: .25rem .25rem .25rem 1.25rem; font-size: .95rem; font-weight: 600; transition: background .2s, transform .2s, box-shadow .2s; }
 .pill:hover { background: var(--color-brand-500); transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(11,11,69,.5); }
-.pill .pill-arrow { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: #1b1b6b; transition: transform .25s; }
+.pill .pill-arrow { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px; background: #1b1b6b; transition: transform .25s; }
 .pill:hover .pill-arrow { transform: rotate(45deg); background: var(--color-lime); color: var(--color-brand-700); }
-.pill-ghost { display: inline-flex; align-items: center; border-radius: 9999px; border: 1.5px solid var(--color-brand-700); padding: .8rem 1.5rem; font-weight: 600; transition: background .2s, color .2s; }
+.pill-ghost { display: inline-flex; align-items: center; border-radius: 9999px; border: 1.5px solid var(--color-brand-700); padding: .65rem 1.25rem; font-size: .95rem; font-weight: 600; transition: background .2s, color .2s; }
 .pill-ghost:hover { background: var(--color-brand-700); color: #fff; }
+
+@media (min-width: 640px) {
+  .pill { padding: .35rem .35rem .35rem 1.5rem; font-size: 1rem; }
+  .pill .pill-arrow { width: 2.5rem; height: 2.5rem; }
+  .pill-ghost { padding: .8rem 1.5rem; font-size: 1rem; }
+}
 
 /* ── hover-lift cards ── */
 .lift { transition: transform .25s ease, box-shadow .25s ease, border-color .25s; }

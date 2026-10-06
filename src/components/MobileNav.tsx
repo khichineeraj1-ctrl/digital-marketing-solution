@@ -24,17 +24,17 @@ export function MobileNav({ menus, logins, joins }: { menus: { label: string; it
   return (
     <div className="lg:hidden">
       <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-panel" onClick={() => setOpen(!open)}
-        className="grid h-11 w-11 place-items-center rounded-full border border-brand-700/25 bg-white text-brand-700">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+        className="tap grid h-9 w-9 place-items-center rounded-full border border-brand-700/25 bg-white text-brand-700">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
           {open ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
         </svg>
       </button>
 
       {/* backdrop */}
-      <div onClick={() => setOpen(false)} aria-hidden className={`fixed inset-x-0 bottom-0 top-[4.5rem] z-30 bg-brand-700/30 backdrop-blur-sm transition-opacity ${open ? "opacity-100" : "pointer-events-none opacity-0"}`} />
+      <div onClick={() => setOpen(false)} aria-hidden className={`fixed inset-x-0 bottom-0 top-[3.75rem] z-30 bg-brand-700/30 backdrop-blur-sm transition-opacity ${open ? "opacity-100" : "pointer-events-none opacity-0"}`} />
 
       <nav id="mobile-panel" aria-label="Mobile"
-        className={`fixed inset-x-3 top-[5rem] z-40 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-3xl border border-slate-200 bg-white p-3 shadow-2xl transition-all duration-200 ${open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}>
+        className={`fixed inset-x-3 top-[4.25rem] z-40 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-3xl border border-slate-200 bg-white p-3 shadow-2xl transition-all duration-200 ${open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}>
         {menus.map((m) => {
           const expanded = section === m.label;
           return (

@@ -37,6 +37,7 @@ export default function Home() {
         big
         eyebrow="Consultative growth partner for the AI era"
         h1="Strategy from experts. Speed from AI."
+        mobileLead="Senior strategists plus AI-powered platforms for search, social and paid. Clear plans, measurable results."
         lead="Senior consultants diagnose what is holding your growth back. Our AI-powered platforms and specialist teams do the heavy lifting across search, social and paid, so you get clarity, speed and results you can measure."
         primary={{ href: "/contact", label: "Book a growth consultation" }}
         secondary={{ href: "#diagnostic", label: "Take the 2-minute diagnostic" }}
