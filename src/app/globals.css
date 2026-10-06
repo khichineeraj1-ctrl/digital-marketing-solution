@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f0f2ff;
+  --color-brand-100: #dfe3ff;
+  --color-brand-500: #4545e0;
+  --color-brand-600: #1c1c78;
+  --color-brand-700: #0b0b45; /* deep navy, used for buttons + links */
+  --color-ink: #0b0b45;
+  --color-muted: #4a4a6a;
+  --color-lime: #b6f542;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { color: var(--color-ink); background: #f6f6f8; font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--color-brand-500); outline-offset: 2px; }
+
+/* ── floating gradient orbs ── */
+@keyframes float-a { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,30px) scale(1.08); } }
+@keyframes float-b { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,-20px) scale(1.12); } }
+.orb { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: .85; will-change: transform; }
+.orb-a { animation: float-a 14s ease-in-out infinite; }
+.orb-b { animation: float-b 18s ease-in-out infinite; }
+
+/* ── pill button with arrow circle ── */
+.pill { display: inline-flex; align-items: center; gap: .75rem; border-radius: 9999px; background: var(--color-brand-700); color: #fff;
+  padding: .35rem .35rem .35rem 1.5rem; font-weight: 600; transition: background .2s, transform .2s, box-shadow .2s; }
+.pill:hover { background: var(--color-brand-500); transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(11,11,69,.5); }
+.pill .pill-arrow { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: #1b1b6b; transition: transform .25s; }
+.pill:hover .pill-arrow { transform: rotate(45deg); background: var(--color-lime); color: var(--color-brand-700); }
+.pill-ghost { display: inline-flex; align-items: center; border-radius: 9999px; border: 1.5px solid var(--color-brand-700); padding: .8rem 1.5rem; font-weight: 600; transition: background .2s, color .2s; }
+.pill-ghost:hover { background: var(--color-brand-700); color: #fff; }
+
+/* ── hover-lift cards ── */
+.lift { transition: transform .25s ease, box-shadow .25s ease, border-color .25s; }
+.lift:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(11,11,69,.35); border-color: var(--color-brand-500); }
+
+/* ── scroll reveal (CSS-only progressive enhancement; content is visible without it) ── */
+@keyframes reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+}
+
+/* ── CSS-only dropdown mega menu: links stay in the DOM (crawlable) ── */
+.menu-panel { visibility: hidden; opacity: 0; transform: translateY(8px); transition: opacity .18s, transform .18s, visibility .18s; }
+.menu:hover .menu-panel, .menu:focus-within .menu-panel { visibility: visible; opacity: 1; transform: none; }
+.menu:hover .chev, .menu:focus-within .chev { transform: rotate(180deg); }
+
+/* case-study filter chips */
+[data-filter="gbp"] [data-svc]:not([data-svc~="gbp"]),
+[data-filter="influencer"] [data-svc]:not([data-svc~="influencer"]),
+[data-filter="seo"] [data-svc]:not([data-svc~="seo"]),
+[data-filter="ads"] [data-svc]:not([data-svc~="ads"]) { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .orb, .reveal { animation: none !important; }
+  * { transition: none !important; }
+}
+
+/* ── AI-era visuals ── */
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes float-c { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes pulse-dot { 0%,100% { opacity: .35; transform: scale(1); } 50% { opacity: 1; transform: scale(1.35); } }
+.horizon-ring { animation: spin-slow 60s linear infinite; }
+.float-chip { animation: float-c 7s ease-in-out infinite; }
+.pulse-dot { animation: pulse-dot 2.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .horizon-ring, .float-chip, .pulse-dot { animation: none !important; } }
