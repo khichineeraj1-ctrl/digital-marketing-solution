@@ -13,6 +13,8 @@ export const organizationLd = () => ({
   url: site.url,
   logo: `${site.url}/icon.svg`,
   email: site.email,
+  telephone: site.phone,
+  address: { "@type": "PostalAddress", addressLocality: site.address.locality, addressRegion: site.address.region, addressCountry: site.address.country },
   ...(site.social.length ? { sameAs: site.social } : {}),
 });
 

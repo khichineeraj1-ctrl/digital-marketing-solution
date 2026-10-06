@@ -28,6 +28,7 @@ const Blocks = ({ md }: { md: string }) => (
     {mdToBlocks(md).map((b: Block, i) =>
       "items" in b ? <ul key={i} className="list-disc space-y-2 pl-6 text-muted">{b.items.map((x) => <li key={x}>{x}</li>)}</ul>
       : b.t === "h2" ? <h3 key={i} className="pt-2 text-xl font-bold">{b.text}</h3>
+      : b.t === "h3" ? <h4 key={i} className="pt-1 text-lg font-bold">{b.text}</h4>
       : <p key={i} className="text-muted">{b.text}</p>)}
   </div>
 );

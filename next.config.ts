@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import path from "node:path";
+import { oldSiteRedirects } from "./src/content/redirects";
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.resolve(process.cwd()),
@@ -23,6 +24,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Old/likely-linked URLs → canonical slugs (301). Extend as URLs change; never delete.
     return [
+      ...oldSiteRedirects.map((r) => ({ ...r, permanent: true })),
       { source: "/gmb", destination: "/google-business-profile-management", permanent: true },
       { source: "/google-my-business", destination: "/google-business-profile-management", permanent: true },
       { source: "/google-my-business-management", destination: "/google-business-profile-management", permanent: true },

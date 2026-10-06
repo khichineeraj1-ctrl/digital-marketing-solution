@@ -1,7 +1,7 @@
 import { assertSlugs } from "@/lib/slug";
 
 export const CATEGORIES = ["Local SEO", "SEO", "Ads", "Influencers"] as const;
-export type Block = { t: "h2" | "p"; text: string } | { t: "ul"; items: string[] };
+export type Block = { t: "h2" | "h3" | "p"; text: string } | { t: "ul"; items: string[] };
 export type Post = {
   slug: string;
   title: string; // H1

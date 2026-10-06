@@ -1,3 +1,5 @@
+import { oldSiteRedirects } from "./redirects";
+
 export const BLOCK_TYPES = [
   { value: "richtext", label: "Text section", help: "## Heading, blank line between paragraphs, '- ' for bullets" },
   { value: "cards", label: "Feature cards", help: "One per line: Title | Description" },
@@ -34,5 +36,6 @@ export const RESERVED_FIRST_SEGMENTS = [
   "influencer-marketplace", "pricing", "privacy", "terms", "seo-services", "thank-you", "sitemap.xml", "robots.txt", "icon.svg", "opengraph-image",
   "login", "signup", "_next", "favicon.ico",
   // redirect sources in next.config.ts
+  ...oldSiteRedirects.map((r) => r.source.split("/")[1]),
   "gmb", "google-my-business", "google-my-business-management", "influencers", "ads", "adwords", "google-ads-management", "meta-ads-management", "seo", "seo-company",
 ] as const;

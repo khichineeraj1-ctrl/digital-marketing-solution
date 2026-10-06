@@ -20,6 +20,7 @@ export function CustomBlocks({ blocks }: { blocks: CustomBlock[] }) {
                 {mdToBlocks(b.text).map((x, i) =>
                   "items" in x ? <ul key={i} className="list-disc space-y-2 pl-6 text-muted">{x.items.map((it) => <li key={it}>{it}</li>)}</ul>
                   : x.t === "h2" ? <h3 key={i} className="pt-2 text-2xl font-bold">{x.text}</h3>
+                  : x.t === "h3" ? <h4 key={i} className="pt-1 text-xl font-bold">{x.text}</h4>
                   : <p key={i} className="text-muted">{x.text}</p>)}
               </section>
             );

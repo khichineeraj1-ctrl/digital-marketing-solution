@@ -9,8 +9,8 @@ const cleanUrl = (v: string | undefined): string => {
 const cleanEmail = (v: string | undefined): string => (v && /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(v) ? v : "");
 
 export const site = {
-  name: "Reachly", // PLACEHOLDER brand — change me
-  legalName: "Reachly Technologies Pvt. Ltd.",
+  name: "Adtrafix",
+  legalName: "Adtrafix Media Solutions LLP",
   tagline: "Strategy from experts. Speed from AI.",
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
   appUrl: (process.env.NEXT_PUBLIC_APP_URL ?? "https://app.example.com").replace(/\/$/, ""),
@@ -26,9 +26,11 @@ export const site = {
   whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP ?? "").replace(/\D/g, ""), // digits with country code, e.g. 919876543210
   country: "IN",
   currency: "INR",
-  email: "hello@example.com",
-  twitter: "@reachly",
-  social: [] as string[], // sameAs URLs for Organization schema (LinkedIn, X, YouTube…)
+  email: "conversation@adtrafix.com",
+  phone: "+91 99904 43367",
+  address: { locality: "Gurugram", region: "Haryana", country: "IN" },
+  twitter: "@adtrafix",
+  social: ["https://www.linkedin.com/company/adtrafix", "https://twitter.com/adtrafix", "https://www.facebook.com/adtrafix"] as string[], // sameAs URLs for Organization schema
   noindex: process.env.NEXT_PUBLIC_NOINDEX === "1",
 } as const;
 
