@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getPublishedCustomPages } from "@/lib/customPages";
+import { FooterCol } from "./FooterCol";
 import { MobileNav } from "./MobileNav";
 import { site, marketplace } from "@/config/site";
 import { products } from "@/content/products";
@@ -101,12 +102,17 @@ export function Header() {
 
 function Col({ title, links }: { title: string; links: { label: string; path: string }[] }) {
   return (
-    <div>
-      <h2 className="text-sm font-semibold text-ink">{title}</h2>
-      <ul className="mt-3 space-y-2 text-sm text-muted">
-        {links.filter((l) => l.path).map((l) => <li key={l.path}>{l.path.startsWith("http") ? <a href={l.path} target="_blank" rel="noopener nofollow" className="hover:text-brand-700 hover:underline">{l.label} ↗</a> : <Link href={l.path} className="hover:text-brand-700 hover:underline">{l.label}</Link>}</li>)}
+    <FooterCol title={title}>
+      <ul className="space-y-1 pb-4 text-sm text-muted lg:mt-3 lg:space-y-2 lg:pb-0">
+        {links.filter((l) => l.path).map((l) => (
+          <li key={l.path}>
+            {l.path.startsWith("http")
+              ? <a href={l.path} target="_blank" rel="noopener nofollow" className="block py-1.5 hover:text-brand-700 hover:underline lg:py-0">{l.label} ↗</a>
+              : <Link href={l.path} className="block py-1.5 hover:text-brand-700 hover:underline lg:py-0">{l.label}</Link>}
+          </li>
+        ))}
       </ul>
-    </div>
+    </FooterCol>
   );
 }
 
@@ -114,24 +120,44 @@ export async function Footer() {
   const more = (await getPublishedCustomPages()).filter((c) => !c.noindex).slice(0, 16);
   const { GBP, INF, ADS, SEO } = paths;
   return (
-    <footer className="border-t border-slate-200 bg-slate-50">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-        <Col title="Business Profile" links={[{ label: "Overview", path: GBP }, ...gbpFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${GBP}/features/${f.slug}` }))]} />
-        <Col title="Influencers" links={[{ label: "Marketplace", path: INF }, { label: "For brands", path: `${INF}/for-brands` }, { label: "For creators", path: `${INF}/for-influencers` }, { label: "Brand & creator login", path: marketplace.login }, ...niches.slice(0, 4).map((n) => ({ label: `${n.name} influencers`, path: `${INF}/niches/${n.slug}` }))]} />
-        <Col title="Ads" links={[{ label: "Overview", path: ADS }, ...adsPlatforms.map((p) => ({ label: `${p.name} management`, path: `${ADS}/${p.slug}` })), ...adsFeatures.slice(0, 3).map((f) => ({ label: f.name, path: `${ADS}/features/${f.slug}` }))]} />
-        <Col title="SEO" links={[{ label: "Overview", path: SEO }, ...seoFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${SEO}/features/${f.slug}` }))]} />
-        <Col title="Cities" links={cities.slice(0, 7).map((c) => ({ label: `SEO services in ${c.name}`, path: `${SEO}/in/${c.slug}` }))} />
-        <Col title="Company" links={[{ label: "About", path: "/about" }, { label: "Our experts", path: "/authors" }, { label: "Pricing", path: "/pricing" }, { label: "Client successes", path: "/case-studies" }, { label: "Blog", path: "/blog" }, { label: "Contact", path: "/contact" }, { label: "Privacy", path: "/privacy" }, { label: "Terms", path: "/terms" }]} />
+    <footer className="mt-10 border-t border-slate-200 bg-white">
+      {/* brand + call to action */}
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between">
+        <div className="max-w-md">
+          <p className="text-2xl font-extrabold tracking-tight text-brand-700">{site.name}</p>
+          <p className="mt-2 text-muted">{site.tagline} Local search, SEO, creators and paid media for growing brands.</p>
+        </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Link href="/contact" className="rounded-full bg-brand-700 px-6 py-3.5 text-center font-semibold text-white transition hover:bg-brand-500">Book a consultation</Link>
+          <a href={`mailto:${site.email}`} className="text-center font-medium text-brand-700 underline sm:px-2">{site.email}</a>
+        </div>
       </div>
+
+      {/* link columns: accordions on phones, open columns on desktop */}
+      <div className="mx-auto max-w-6xl border-t border-slate-200 px-4 py-2 lg:grid lg:grid-cols-6 lg:gap-8 lg:py-10">
+        <Col title="Business Profile" links={[{ label: "Overview", path: GBP }, ...gbpFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${GBP}/features/${f.slug}` }))]} />
+        <Col title="SEO" links={[{ label: "Overview", path: SEO }, ...seoFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${SEO}/features/${f.slug}` }))]} />
+        <Col title="Influencers" links={[{ label: "Marketplace", path: INF }, { label: "For brands", path: `${INF}/for-brands` }, { label: "For creators", path: `${INF}/for-influencers` }, ...niches.slice(0, 4).map((n) => ({ label: `${n.name} influencers`, path: `${INF}/niches/${n.slug}` }))]} />
+        <Col title="Ads" links={[{ label: "Overview", path: ADS }, ...adsPlatforms.map((p) => ({ label: `${p.name} management`, path: `${ADS}/${p.slug}` })), ...adsFeatures.slice(0, 3).map((f) => ({ label: f.name, path: `${ADS}/features/${f.slug}` }))]} />
+        <Col title="Cities" links={cities.slice(0, 7).map((c) => ({ label: `SEO services in ${c.name}`, path: `${SEO}/in/${c.slug}` }))} />
+        <Col title="Company" links={[{ label: "About", path: "/about" }, { label: "Our experts", path: "/authors" }, { label: "Pricing", path: "/pricing" }, { label: "Client successes", path: "/case-studies" }, { label: "Blog", path: "/blog" }, { label: "Contact", path: "/contact" }]} />
+      </div>
+
       {more.length > 0 && (
         <nav aria-label="More pages" className="mx-auto max-w-6xl border-t border-slate-200 px-4 py-6">
           <h2 className="text-sm font-semibold text-ink">More pages</h2>
-          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
-            {more.map((c) => <li key={c.id}><Link href={`/${c.path}`} className="hover:text-brand-700 hover:underline">{c.title}</Link></li>)}
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
+            {more.map((c) => <li key={c.id}><Link href={`/${c.path}`} className="block py-1.5 hover:text-brand-700 hover:underline">{c.title}</Link></li>)}
           </ul>
         </nav>
       )}
-      <div className="border-t border-slate-200 py-5 text-center text-xs text-muted">© {new Date().getFullYear()} {site.legalName}</div>
+
+      <div className="border-t border-slate-200">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted sm:flex-row">
+          <p>© {new Date().getFullYear()} {site.legalName} All rights reserved.</p>
+          <ul className="flex gap-5"><li><Link href="/privacy" className="block py-1.5 hover:underline">Privacy</Link></li><li><Link href="/terms" className="block py-1.5 hover:underline">Terms</Link></li></ul>
+        </div>
+      </div>
     </footer>
   );
 }
