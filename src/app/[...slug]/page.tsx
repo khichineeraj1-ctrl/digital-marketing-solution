@@ -9,6 +9,8 @@ import { absoluteUrl } from "@/lib/seo";
 import { site } from "@/config/site";
 import { getPublishedCustomPage, getPublishedCustomPages } from "@/lib/customPages";
 
+export const revalidate = 60;
+
 type P = { params: Promise<{ slug: string[] }> };
 
 // Pages created in /admin/pages. Code-defined routes always win, so this only receives unmatched URLs.

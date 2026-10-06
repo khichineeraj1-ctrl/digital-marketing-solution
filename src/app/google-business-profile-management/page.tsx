@@ -1,4 +1,5 @@
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Hero } from "@/components/Hero";
 import { BenefitGrid, RelatedLinks } from "@/components/Sections";
@@ -11,14 +12,17 @@ import { products, gbpFaqs, pricing } from "@/content/products";
 import { gbpFeatures, gbpIndustries } from "@/content/gbp";
 import { cities } from "@/content/cities";
 
+export const revalidate = 60;
+
 const p = products.gbp;
-export const metadata = buildMetadata({ title: p.metaTitle, description: p.metaDescription, path: p.path });
+export const generateMetadata = () => metaFor({ title: p.metaTitle, description: p.metaDescription, path: p.path });
 
 export default async function Page() {
+  const ov = await getOverride("/google-business-profile-management");
   return (
     <>
       <Breadcrumbs trail={[{ name: p.short, path: p.path }]} />
-      <Hero eyebrow="GBP OS by Adtrafix" h1={p.h1} lead={p.lead} primary={{ href: "/contact?service=gbp", label: p.cta }} secondary={{ href: `${p.path}/get-started`, label: "Connect your profile" }} />
+      <Hero eyebrow="GBP OS by Adtrafix" h1={ov?.h1 ?? p.h1} lead={ov?.lead ?? p.lead} primary={{ href: "/contact?service=gbp", label: p.cta }} secondary={{ href: `${p.path}/get-started`, label: "Connect your profile" }} />
       <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="how-h">
         <h2 id="how-h" className="text-3xl font-bold tracking-tight">Share access. We run the rest.</h2>
         <ol className="mt-8 grid gap-6 md:grid-cols-3">
@@ -33,7 +37,8 @@ export default async function Page() {
       <RelatedLinks heading="Available across India" links={cities.map((c) => ({ label: `Profile management in ${c.name}`, path: `${p.path}/in/${c.slug}` }))} />
       <CaseStudyStrip service="gbp" heading="Results our clients see" />
       <RelatedLinks heading="Pair it with" links={[{ label: "Local SEO services", path: "/seo-services/features/local-seo", note: "Rank your website alongside your profile" }, { label: "SEO services", path: "/seo-services" }]} />
-      <Faq faqs={gbpFaqs} />
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
+      <Faq faqs={ov?.faqs?.length ? ov.faqs : gbpFaqs} />
       <Cta href="/contact?service=gbp" label={p.cta} />
       <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: pricing[0].from })} />
     </>

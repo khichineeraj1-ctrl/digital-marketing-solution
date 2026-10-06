@@ -9,6 +9,8 @@ import { profilePageLd } from "@/lib/jsonld";
 import { getPublishedAuthors, getPublishedAuthor, postsBy } from "@/lib/authors";
 import { mdToBlocks } from "@/lib/posts";
 
+export const revalidate = 60;
+
 type P = { params: Promise<{ slug: string }> };
 export const generateStaticParams = async () => (await getPublishedAuthors()).map((a) => ({ slug: a.slug }));
 

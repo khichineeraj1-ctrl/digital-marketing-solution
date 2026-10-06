@@ -1,10 +1,13 @@
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { GbpConnectForm } from "./GbpConnectForm";
 import { products } from "@/content/products";
 
+export const revalidate = 60;
+
 const path = `${products.gbp.path}/get-started`;
-export const metadata = buildMetadata({
+export const generateMetadata = () => metaFor({
   title: "Connect Your Google Business Profile",
   description: "Share manager access to your Google Business Profile and we handle the rest: audit, optimisation, review replies, posts and reporting. No new login needed.",
   path,
@@ -16,7 +19,8 @@ const steps = [
   { t: "We take it from there", d: "We pull your profile data, audit it and start optimising: reviews, posts, photos and information." },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const ov = await getOverride("/google-business-profile-management/get-started");
   return (
     <>
       <Breadcrumbs trail={[{ name: products.gbp.short, path: products.gbp.path }, { name: "Get started", path }]} />
@@ -39,6 +43,7 @@ export default function Page() {
           <p className="mt-6 rounded-2xl bg-brand-50 p-5 text-sm text-muted"><b className="text-ink">Safe by design.</b> Manager access can&apos;t transfer ownership or delete your profile, and you can revoke it from Google at any time.</p>
         </aside>
       </section>
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
     </>
   );
 }

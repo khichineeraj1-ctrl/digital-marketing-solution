@@ -1,22 +1,27 @@
 import Link from "next/link";
-import { buildMetadata } from "@/lib/seo";
+import { Faq } from "@/components/Faq";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Hero } from "@/components/Hero";
 import { getPublishedPosts } from "@/lib/posts";
 import { readMins } from "@/lib/posts";
 
-export const metadata = buildMetadata({
+export const revalidate = 60;
+
+export const generateMetadata = () => metaFor({
   title: "Local SEO, Ads & Influencer Marketing Blog",
   description: "Practical guides on Google Business Profile, local SEO, Google Ads, Meta Ads and influencer marketing for Indian businesses and agencies.",
   path: "/blog",
 });
 
 export default async function Page() {
+  const ov = await getOverride("/blog");
   const sorted = await getPublishedPosts();
   return (
     <>
       <Breadcrumbs trail={[{ name: "Blog", path: "/blog" }]} />
-      <Hero h1="Growth Guides and Resources" lead="Playbooks for local SEO, paid ads and influencer marketing." />
+      <Hero h1={ov?.h1 ?? "Growth Guides and Resources"} lead={ov?.lead ?? "Playbooks for local SEO, paid ads and influencer marketing."} />
       <section className="mx-auto grid max-w-6xl gap-6 px-4 py-10 md:grid-cols-2">
         {sorted.map((p) => (
           <article key={p.slug} className="rounded-2xl border border-slate-200 p-6">
@@ -27,6 +32,8 @@ export default async function Page() {
           </article>
         ))}
       </section>
-    </>
+          {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
+          {ov?.faqs?.length ? <Faq faqs={ov.faqs} /> : null}
+</>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Hero } from "@/components/Hero";
 import { Faq } from "@/components/Faq";
@@ -8,7 +9,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { pricing, products } from "@/content/products";
 import { site } from "@/config/site";
 
-export const metadata = buildMetadata({
+export const revalidate = 60;
+
+export const generateMetadata = () => metaFor({
   title: "Pricing: GBP OS, Adtrafix Match, SEO and Ads",
   description: "Simple pricing for GBP OS by Adtrafix, the Adtrafix Match influencer marketplace, SEO services and ads management. Get a quote that fits your goals.",
   path: "/pricing",
@@ -20,7 +23,8 @@ const faqs = [
   { q: "Can I cancel any time?", a: "Yes. Plans are monthly and can be cancelled from your account at any time." },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const ov = await getOverride("/pricing");
   const ld = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -32,7 +36,7 @@ export default function Page() {
   return (
     <>
       <Breadcrumbs trail={[{ name: "Pricing", path: "/pricing" }]} />
-      <Hero h1="Simple, Transparent Pricing" lead="Pick one product or use all three. Start free — upgrade when you grow." />
+      <Hero h1={ov?.h1 ?? "Simple, Transparent Pricing"} lead={ov?.lead ?? "Pick one product or use all three. Start free — upgrade when you grow."} />
       <section className="mx-auto grid max-w-6xl gap-6 px-4 py-10 md:grid-cols-3">
         {pricing.map((p) => (
           <div key={p.name} className="flex flex-col rounded-2xl border border-slate-200 p-6">
@@ -45,7 +49,8 @@ export default function Page() {
           </div>
         ))}
       </section>
-      <Faq faqs={faqs} />
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
+      <Faq faqs={ov?.faqs?.length ? ov.faqs : faqs} />
       <Cta />
       <JsonLd data={ld} />
     </>

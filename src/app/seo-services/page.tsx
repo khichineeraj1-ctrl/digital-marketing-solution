@@ -1,4 +1,5 @@
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Hero } from "@/components/Hero";
 import { BenefitGrid, RelatedLinks } from "@/components/Sections";
@@ -11,8 +12,10 @@ import { products, seoFaqs } from "@/content/products";
 import { seoFeatures, seoIndustries } from "@/content/seo";
 import { cities } from "@/content/cities";
 
+export const revalidate = 60;
+
 const p = products.seo;
-export const metadata = buildMetadata({ title: p.metaTitle, description: p.metaDescription, path: p.path });
+export const generateMetadata = () => metaFor({ title: p.metaTitle, description: p.metaDescription, path: p.path });
 
 const process = [
   ["Audit", "We review technical health, content, links and competitors to find the biggest opportunities."],
@@ -22,10 +25,11 @@ const process = [
 ];
 
 export default async function Page() {
+  const ov = await getOverride("/seo-services");
   return (
     <>
       <Breadcrumbs trail={[{ name: p.short, path: p.path }]} />
-      <Hero eyebrow="SEO that compounds" h1={p.h1} lead={p.lead} primary={{ href: "/contact?service=seo", label: p.cta }} secondary={{ href: "/case-studies", label: "See client results" }} />
+      <Hero eyebrow="SEO that compounds" h1={ov?.h1 ?? p.h1} lead={ov?.lead ?? p.lead} primary={{ href: "/contact?service=seo", label: p.cta }} secondary={{ href: "/case-studies", label: "See client results" }} />
       <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="proc-h">
         <h2 id="proc-h" className="text-3xl font-bold tracking-tight">How we work</h2>
         <ol className="mt-8 grid gap-6 md:grid-cols-4">
@@ -39,7 +43,8 @@ export default async function Page() {
       <RelatedLinks heading="SEO for your industry" links={seoIndustries.map((i) => ({ label: `SEO for ${i.title}`, path: `${p.path}/for/${i.slug}` }))} />
       <RelatedLinks heading="SEO services across India" links={cities.map((c) => ({ label: `SEO services in ${c.name}`, path: `${p.path}/in/${c.slug}` }))} />
       <CaseStudyStrip service="seo" heading="SEO results our clients see" />
-      <Faq faqs={seoFaqs} />
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
+      <Faq faqs={ov?.faqs?.length ? ov.faqs : seoFaqs} />
       <Cta href="/contact?service=seo" label={p.cta} />
       <JsonLd data={serviceLd({ name: p.name, description: p.metaDescription, path: p.path })} />
     </>

@@ -1,14 +1,15 @@
 import { notFound } from "next/navigation";
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
 import { CityTemplate } from "@/components/templates";
 import { cities, getCity } from "@/content/cities";
 import { niches } from "@/content/influencer";
 import { products } from "@/content/products";
 
+export const revalidate = 60;
+
 const base = products.influencer.path;
 type P = { params: Promise<{ city: string }> };
 
-export const dynamicParams = false;
 export const generateStaticParams = () => cities.map((c) => ({ city: c.slug }));
 
 const titleOf = (n: string) => `Influencer Marketing in ${n}: Hire Local Creators`;
@@ -17,7 +18,7 @@ const descOf = (n: string) => `Find verified ${n} influencers for store launches
 export async function generateMetadata({ params }: P) {
   const c = getCity((await params).city);
   if (!c) return {};
-  return buildMetadata({ title: titleOf(c.name), description: descOf(c.name), path: `${base}/in/${c.slug}` });
+  return metaFor({ title: titleOf(c.name), description: descOf(c.name), path: `${base}/in/${c.slug}` });
 }
 
 export default async function Page({ params }: P) {

@@ -13,6 +13,8 @@ import { site } from "@/config/site";
 import { products } from "@/content/products";
 import type { Block } from "@/content/blog";
 
+export const revalidate = 60;
+
 type P = { params: Promise<{ slug: string }> };
 export const generateStaticParams = async () => (await getPublishedCaseStudies()).map((c) => ({ slug: c.slug }));
 

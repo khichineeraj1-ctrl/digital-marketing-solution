@@ -1,12 +1,16 @@
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { mdToBlocks } from "@/lib/posts";
 import legal from "@/content/legal.json";
 
-const doc = legal.terms;
-export const metadata = buildMetadata({ title: "Terms of Service", description: doc.description.length > 160 ? `${doc.description.slice(0, 157)}…` : doc.description, path: "/terms" });
+export const revalidate = 60;
 
-export default function Page() {
+const doc = legal.terms;
+export const generateMetadata = () => metaFor({ title: "Terms of Service", description: doc.description.length > 160 ? `${doc.description.slice(0, 157)}…` : doc.description, path: "/terms" });
+
+export default async function Page() {
+  const ov = await getOverride("/terms");
   return (
     <>
       <Breadcrumbs trail={[{ name: "Terms of Service", path: "/terms" }]} />
@@ -20,6 +24,7 @@ export default function Page() {
             : <p key={i} className="text-muted">{b.text}</p>)}
         </div>
       </article>
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
     </>
   );
 }

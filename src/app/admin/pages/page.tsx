@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/adminAuth";
 import { allRoutes } from "@/lib/routes";
+import { getAllOverrides } from "@/lib/overrides";
+import { editablePaths } from "@/lib/editable";
 import { absoluteUrl } from "@/lib/seo";
 import { getAllCustomPages } from "@/lib/customPages";
 import { deleteCustomPageAction } from "./actions";
 
 const section = (p: string) => (p === "/" ? "Home" : p.split("/")[1]);
-const MSG: Record<string, string> = { published: "Page published and added to the sitemap.", draft: "Page saved as draft.", deleted: "Page deleted." };
+const MSG: Record<string, string> = { published: "Page published and added to the sitemap.", draft: "Page saved as draft.", deleted: "Page deleted.", site: "Changes saved. They go live within a minute.", reset: "Page reset to its default content." };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ saved?: string }> }) {
   await requireAdmin();
   const { saved } = await searchParams;
-  const [routes, custom] = await Promise.all([allRoutes(), getAllCustomPages()]);
+  const [routes, custom, overrides, editable] = await Promise.all([allRoutes(), getAllCustomPages(), getAllOverrides(), editablePaths()]);
+  const editableSet = new Set(editable);
   const customPaths = new Set(custom.map((c) => `/${c.path}`));
   const system = routes.filter((r) => !customPaths.has(r.path));
   const groups = new Map<string, typeof system>();
@@ -53,7 +56,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ s
 
       <section className="mt-12">
         <h2 className="font-semibold">Site pages <span className="font-normal text-muted">({system.length})</span></h2>
-        <p className="mt-1 text-sm text-muted">Built-in pages generated from <code>src/content/*</code>. Run <code>npm run seo:check</code> for the full audit. <a className="underline" href="/sitemap.xml" target="_blank">sitemap.xml ↗</a> · <a className="underline" href="/robots.txt" target="_blank">robots.txt ↗</a></p>
+        <p className="mt-1 text-sm text-muted">Built-in pages. Click <b>Edit</b> to change a page's headline, intro, SEO text, FAQs or add extra sections. Blog posts, client stories and author profiles have their own editors in the menu. <a className="underline" href="/sitemap.xml" target="_blank">sitemap.xml ↗</a> · <a className="underline" href="/robots.txt" target="_blank">robots.txt ↗</a></p>
         {[...groups].map(([name, list]) => (
           <div key={name} className="mt-6">
             <h3 className="text-sm font-semibold capitalize">{name.replace(/-/g, " ")} <span className="font-normal text-muted">({list.length})</span></h3>
@@ -62,8 +65,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ s
                 {list.map((r) => (
                   <tr key={r.path} className="border-t border-slate-100 first:border-0">
                     <td className="p-3"><Link href={r.path} target="_blank" className="text-brand-700 hover:underline">{r.path}</Link></td>
-                    <td className="text-muted">priority {r.priority}</td><td className="text-muted">{r.changeFrequency}</td>
-                    <td className="hidden pr-3 text-right text-xs text-muted md:table-cell">{absoluteUrl(r.path)}</td>
+                    <td className="text-muted">{overrides[r.path] ? <span className="rounded-full bg-lime px-2 py-0.5 text-xs font-bold text-brand-700">EDITED</span> : "default"}</td><td className="pr-3 text-right">{editableSet.has(r.path) ? <Link href={`/admin/pages/site?path=${encodeURIComponent(r.path)}`} className="font-semibold text-brand-700 underline">Edit</Link> : <span className="text-xs text-muted">edit in its own section</span>}</td>
+                    
                   </tr>
                 ))}
               </tbody></table>

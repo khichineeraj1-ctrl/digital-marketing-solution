@@ -1,21 +1,22 @@
 import { notFound } from "next/navigation";
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
 import { FeatureTemplate } from "@/components/templates";
 import { adsPlatforms, adsFeatures } from "@/content/ads";
 import { products } from "@/content/products";
+
+export const revalidate = 60;
 
 const base = products.ads.path;
 type P = { params: Promise<{ platform: string }> };
 const find = (s: string) => adsPlatforms.find((x) => x.slug === s);
 
-export const dynamicParams = false;
 // Reserved sibling segments (features, for) are static folders, so they never reach this route.
 export const generateStaticParams = () => adsPlatforms.map((p) => ({ platform: p.slug }));
 
 export async function generateMetadata({ params }: P) {
   const p = find((await params).platform);
   if (!p) return {};
-  return buildMetadata({ title: p.metaTitle, description: p.metaDescription, path: `${base}/${p.slug}` });
+  return metaFor({ title: p.metaTitle, description: p.metaDescription, path: `${base}/${p.slug}` });
 }
 
 export default async function Page({ params }: P) {

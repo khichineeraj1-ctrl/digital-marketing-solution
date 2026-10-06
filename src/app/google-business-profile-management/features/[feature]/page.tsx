@@ -1,20 +1,21 @@
 import { notFound } from "next/navigation";
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
 import { FeatureTemplate } from "@/components/templates";
 import { gbpFeatures } from "@/content/gbp";
 import { products } from "@/content/products";
 
+export const revalidate = 60;
+
 const base = products.gbp.path;
 type P = { params: Promise<{ feature: string }> };
 
-export const dynamicParams = false;
 export const generateStaticParams = () => gbpFeatures.map((f) => ({ feature: f.slug }));
 
 export async function generateMetadata({ params }: P) {
   const { feature } = await params;
   const f = gbpFeatures.find((x) => x.slug === feature);
   if (!f) return {};
-  return buildMetadata({ title: f.metaTitle, description: f.metaDescription, path: `${base}/features/${f.slug}` });
+  return metaFor({ title: f.metaTitle, description: f.metaDescription, path: `${base}/features/${f.slug}` });
 }
 
 export default async function Page({ params }: P) {

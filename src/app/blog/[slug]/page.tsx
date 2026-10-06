@@ -11,6 +11,8 @@ import { AuthorBox } from "@/components/AuthorBox";
 import { AuthorAvatar } from "@/components/AuthorAvatar";
 import Link from "next/link";
 
+export const revalidate = 60;
+
 type P = { params: Promise<{ slug: string }> };
 // New/edited posts from the admin render on demand and are revalidated on save.
 export const generateStaticParams = async () => (await getPublishedPosts()).map((p) => ({ slug: p.slug }));

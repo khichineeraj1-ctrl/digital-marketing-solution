@@ -1,13 +1,14 @@
 import { notFound } from "next/navigation";
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
 import { IndustryTemplate } from "@/components/templates";
 import { gbpIndustries, gbpFeatures } from "@/content/gbp";
 import { products } from "@/content/products";
 
+export const revalidate = 60;
+
 const base = products.gbp.path;
 type P = { params: Promise<{ industry: string }> };
 
-export const dynamicParams = false;
 export const generateStaticParams = () => gbpIndustries.map((i) => ({ industry: i.slug }));
 
 const titleOf = (t: string) => `Google Business Profile Management for ${t}`;
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: P) {
   const { industry } = await params;
   const i = gbpIndustries.find((x) => x.slug === industry);
   if (!i) return {};
-  return buildMetadata({ title: titleOf(i.title), description: descOf(i.name), path: `${base}/for/${i.slug}` });
+  return metaFor({ title: titleOf(i.title), description: descOf(i.name), path: `${base}/for/${i.slug}` });
 }
 
 export default async function Page({ params }: P) {

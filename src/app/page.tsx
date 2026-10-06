@@ -3,7 +3,8 @@ import { Hero } from "@/components/Hero";
 import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
 import { JsonLd } from "@/components/JsonLd";
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { organizationLd, websiteLd } from "@/lib/jsonld";
 import { site } from "@/config/site";
 import { CaseStudyStrip } from "@/components/CaseStudyStrip";
@@ -14,8 +15,10 @@ import { Diagnostic } from "@/components/Diagnostic";
 import { PerspectivesStrip } from "@/components/PerspectivesStrip";
 import { ServiceShowcase } from "@/components/ServiceShowcase";
 
+export const revalidate = 60;
 
-export const metadata = buildMetadata({
+
+export const generateMetadata = () => metaFor({
   title: "Consultative Growth Partner for the AI Era",
   description: "Senior strategists plus AI-powered platforms for SEO, Google Business Profile, influencer marketing and Google and Meta ads. Book a growth consultation.",
   path: "/",
@@ -27,14 +30,15 @@ const faqs = [
   { q: "Can I use only one service?", a: "Yes. Each service works on its own, and they work even better together." },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const ov = await getOverride("/");
   return (
     <>
       <Hero
         big
         eyebrow="Consultative growth partner for the AI era"
-        h1="Strategy from experts. Speed from AI."
-        lead="Senior strategists plus AI-powered platforms for search, social and paid."
+        h1={ov?.h1 ?? "Strategy from experts. Speed from AI."}
+        lead={ov?.lead ?? "Senior strategists plus AI-powered platforms for search, social and paid."}
         primary={{ href: "/contact", label: "Book a growth consultation" }}
         secondary={{ href: "#diagnostic", label: "Take the 2-minute diagnostic" }}
         visual={<ProductBanner />}
@@ -48,7 +52,8 @@ export default function Home() {
       <section className="mx-auto max-w-3xl px-4 pb-6 text-muted">
         <p>{site.name} is built for Indian businesses, brands and creators. <Link href="/about" className="text-brand-700 underline">Learn about us</Link> or read our <Link href="/blog" className="text-brand-700 underline">growth guides</Link>.</p>
       </section>
-      <Faq faqs={faqs} />
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
+      <Faq faqs={ov?.faqs?.length ? ov.faqs : faqs} />
       <Cta />
       <JsonLd data={[organizationLd(), websiteLd()]} />
     </>

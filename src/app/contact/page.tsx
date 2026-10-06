@@ -1,11 +1,14 @@
-import { buildMetadata } from "@/lib/seo";
+import { metaFor, getOverride } from "@/lib/overrides";
+import { CustomBlocks } from "@/components/CustomBlocks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Suspense } from "react";
 import { EnquiryForm } from "./EnquiryForm";
 import { site, marketplace } from "@/config/site";
 
+export const revalidate = 60;
+
 // ?service= only pre-selects the dropdown: all variants share one canonical URL.
-export const metadata = buildMetadata({
+export const generateMetadata = () => metaFor({
   title: "Get a Free Audit: Contact Our Growth Team",
   description: "Tell us about your business and get a free audit of your Google Business Profile, ads or influencer plan. An expert replies within one working day.",
   path: "/contact",
@@ -16,7 +19,8 @@ const entry = [
   { name: "Ads Management OS", note: "Existing customer? Open your workspace.", href: site.apps.ads ? `${site.apps.ads}/login` : "" },
 ].filter((e) => e.href);
 
-export default function Page() {
+export default async function Page() {
+  const ov = await getOverride("/contact");
   return (
     <>
       <Breadcrumbs trail={[{ name: "Contact", path: "/contact" }]} />
@@ -53,6 +57,7 @@ export default function Page() {
           </div>
         </aside>
       </section>
+      {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
     </>
   );
 }
