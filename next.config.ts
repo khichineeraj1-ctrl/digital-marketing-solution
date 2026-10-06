@@ -2,6 +2,19 @@ import type { NextConfig } from "next";
 import path from "node:path";
 import { oldSiteRedirects } from "./src/content/redirects";
 
+// If the site's canonical host is "www.example.com", also answer for the bare "example.com" and send it to www,
+// keeping the path. Old-site URLs go straight to their final page in one hop.
+const siteHost = (() => { try { return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "").host; } catch { return ""; } })();
+const wwwHost = siteHost.startsWith("www.") ? siteHost : "";
+const bareHost = wwwHost.replace(/^www\./, "");
+const bareToWww = wwwHost
+  ? [
+      ...oldSiteRedirects.map((r) => ({ source: r.source, has: [{ type: "host" as const, value: bareHost }], destination: `https://${wwwHost}${r.destination}`, permanent: true })),
+      { source: "/google-my-business", has: [{ type: "host" as const, value: bareHost }], destination: `https://${wwwHost}/google-business-profile-management`, permanent: true },
+      { source: "/:path*", has: [{ type: "host" as const, value: bareHost }], destination: `https://${wwwHost}/:path*`, permanent: true },
+    ]
+  : [];
+
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.resolve(process.cwd()),
   poweredByHeader: false,
@@ -24,6 +37,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Old/likely-linked URLs → canonical slugs (301). Extend as URLs change; never delete.
     return [
+      ...bareToWww,
       ...oldSiteRedirects.map((r) => ({ ...r, permanent: true })),
       { source: "/gmb", destination: "/google-business-profile-management", permanent: true },
       { source: "/google-my-business", destination: "/google-business-profile-management", permanent: true },
