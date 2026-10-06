@@ -13,7 +13,7 @@ export function AuthorBox({ a }: { a: Author }) {
           <p className="mt-1 text-xl font-bold"><Link href={`/authors/${a.slug}`} rel="author" className="hover:underline">{a.name}</Link></p>
           <p className="text-sm text-muted">{a.role}</p>
           <p className="mt-3 text-muted">{first}</p>
-          <Link href={`/authors/${a.slug}`} className="mt-3 inline-block font-semibold text-brand-700">View profile and all articles →</Link>
+          <Link href={`/authors/${a.slug}`} className="tap mt-3 inline-block font-semibold text-brand-700">View profile and all articles →</Link>
         </div>
       </div>
     </aside>

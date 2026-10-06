@@ -7,7 +7,7 @@ export function CaseStudyFilter({ children }: { children: React.ReactNode }) {
   const [f, setF] = useState<string>("all");
   const chip = (v: string, label: string) => (
     <button key={v} onClick={() => setF(v)} aria-pressed={f === v}
-      className={`rounded-full px-5 py-2 text-sm font-semibold transition ${f === v ? "bg-brand-700 text-white" : "bg-white text-brand-700 hover:bg-brand-50"}`}>{label}</button>
+      className={`rounded-full px-5 py-3 text-sm font-semibold transition ${f === v ? "bg-brand-700 text-white" : "bg-white text-brand-700 hover:bg-brand-50"}`}>{label}</button>
   );
   return (
     <div data-filter={f}>

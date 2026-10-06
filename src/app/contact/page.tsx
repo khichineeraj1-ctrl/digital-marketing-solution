@@ -1,7 +1,7 @@
 import { buildMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { Suspense } from "react";
 import { EnquiryForm } from "./EnquiryForm";
-import { SERVICES } from "@/content/enquiry";
 import { site, marketplace } from "@/config/site";
 
 // ?service= only pre-selects the dropdown: all variants share one canonical URL.
@@ -13,12 +13,10 @@ export const metadata = buildMetadata({
 
 const entry = [
   { name: "Influencer Marketplace", note: "Brands and creators: log in or join.", href: marketplace.login },
-  { name: "Ads Management OS", note: "Existing customer? Open your workspace.", href: `${site.apps.ads}/login` },
-];
+  { name: "Ads Management OS", note: "Existing customer? Open your workspace.", href: site.apps.ads ? `${site.apps.ads}/login` : "" },
+].filter((e) => e.href);
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ service?: string }> }) {
-  const { service } = await searchParams;
-  const initial = SERVICES.some((s) => s.value === service) ? service! : null;
+export default function Page() {
   return (
     <>
       <Breadcrumbs trail={[{ name: "Contact", path: "/contact" }]} />
@@ -26,7 +24,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ s
         <div className="md:col-span-3">
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Talk to a growth strategist</h1>
           <p className="mt-4 text-lg text-muted">Share a few details and a senior strategist will review your presence and reply within one working day with a free audit and a clear recommendation.</p>
-          <div className="mt-8 rounded-3xl border border-slate-100 bg-white p-5 shadow-xl shadow-brand-700/5 sm:p-8"><EnquiryForm initialService={initial} /></div>
+          <div className="mt-8 rounded-3xl border border-slate-100 bg-white p-5 shadow-xl shadow-brand-700/5 sm:p-8"><Suspense fallback={<div className="h-96" aria-hidden />}><EnquiryForm /></Suspense></div>
         </div>
         <aside className="space-y-6 md:col-span-2">
           <div className="rounded-3xl bg-brand-700 p-6 text-white">

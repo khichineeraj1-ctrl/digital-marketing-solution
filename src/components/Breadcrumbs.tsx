@@ -14,7 +14,7 @@ export function Breadcrumbs({ trail }: { trail: Crumb[] }) {
             <li key={c.path} className={`flex min-w-0 items-center gap-1.5 ${!last && i > 0 ? "hidden sm:flex" : ""}`}>
               {i > 0 && <span aria-hidden className="text-slate-400">/</span>}
               {last ? <span aria-current="page" className="truncate font-medium text-ink">{c.name}</span>
-                : <Link href={c.path} className="shrink-0 hover:underline">{c.name}</Link>}
+                : <Link href={c.path} className="tap shrink-0 hover:underline">{c.name}</Link>}
             </li>
           );
         })}

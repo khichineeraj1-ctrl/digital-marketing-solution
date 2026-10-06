@@ -13,7 +13,7 @@ export function ProductTabs({ tabs }: { tabs: Tab[] }) {
         {tabs.map((t) => (
           <button key={t.key} role="tab" id={`tab-${t.key}`} aria-selected={active === t.key} aria-controls={`panel-${t.key}`}
             onClick={() => setActive(t.key)}
-            className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${active === t.key ? "bg-brand-700 text-white shadow" : "text-brand-700 hover:bg-brand-50"}`}>
+            className={`rounded-full px-5 py-3 text-sm font-semibold transition-all ${active === t.key ? "bg-brand-700 text-white shadow" : "text-brand-700 hover:bg-brand-50"}`}>
             {t.name}
           </button>
         ))}

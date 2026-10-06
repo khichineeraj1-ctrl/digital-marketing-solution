@@ -1,6 +1,13 @@
 /**
  * Single source of truth for brand + URLs. Rename the brand here — nothing else is hard-coded.
  */
+/** Returns a clean https origin, or "" when the value is missing, a placeholder like "<your app>", or not a valid URL. */
+const cleanUrl = (v: string | undefined): string => {
+  if (!v || /[<>\s]/.test(v)) return "";
+  try { const u = new URL(v); return /^https?:$/.test(u.protocol) ? v.replace(/\/$/, "") : ""; } catch { return ""; }
+};
+const cleanEmail = (v: string | undefined): string => (v && /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(v) ? v : "");
+
 export const site = {
   name: "Reachly", // PLACEHOLDER brand — change me
   legalName: "Reachly Technologies Pvt. Ltd.",
@@ -10,11 +17,11 @@ export const site = {
   locale: "en-IN",
   // Each product is its own platform; this site only links to them.
   apps: {
-    creators: (process.env.NEXT_PUBLIC_CREATOR_APP_URL ?? "https://creators.example.com").replace(/\/$/, ""),
-    ads: (process.env.NEXT_PUBLIC_ADS_APP_URL ?? "https://ads.example.com").replace(/\/$/, ""),
+    creators: cleanUrl(process.env.NEXT_PUBLIC_CREATOR_APP_URL),
+    ads: cleanUrl(process.env.NEXT_PUBLIC_ADS_APP_URL),
   },
   // Business Profile has NO login: clients add this Google account as a manager of their profile.
-  gbpManagerEmail: process.env.NEXT_PUBLIC_GBP_MANAGER_EMAIL ?? "profiles@example.com",
+  gbpManagerEmail: cleanEmail(process.env.NEXT_PUBLIC_GBP_MANAGER_EMAIL),
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL ?? "",
   whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP ?? "").replace(/\D/g, ""), // digits with country code, e.g. 919876543210
   country: "IN",
@@ -27,9 +34,9 @@ export const site = {
 
 /** Influencer marketplace: one platform, one login for both brands and creators. */
 export const marketplace = {
-  login: `${site.apps.creators}/login`,
-  brandSignup: `${site.apps.creators}/signup?role=brand`,
-  creatorSignup: `${site.apps.creators}/signup?role=creator`,
+  login: site.apps.creators ? `${site.apps.creators}/login` : "",
+  brandSignup: site.apps.creators ? `${site.apps.creators}/signup?role=brand` : "",
+  creatorSignup: site.apps.creators ? `${site.apps.creators}/signup?role=creator` : "",
 } as const;
 
 export const SEO_LIMITS = {

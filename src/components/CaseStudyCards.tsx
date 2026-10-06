@@ -20,23 +20,24 @@ export function Cover({ c, className = "" }: { c: CaseStudy; className?: string 
   );
 }
 
-export function CaseStudyCard({ c, featured = false }: { c: CaseStudy; featured?: boolean }) {
+export function CaseStudyCard({ c, featured = false, level = 3 }: { c: CaseStudy; featured?: boolean; level?: 2 | 3 }) {
+  const H = level === 2 ? "h2" : "h3";
   return (
     <article className={`reveal lift group overflow-hidden rounded-3xl border border-slate-200 bg-white ${featured ? "md:grid md:grid-cols-2" : ""}`}>
-      <Link href={`/case-studies/${c.slug}`} aria-label={c.title} className="block">
+      <Link href={`/case-studies/${c.slug}`} tabIndex={-1} aria-hidden="true" className="block">
         <Cover c={c} className={featured ? "h-64 md:h-full md:min-h-[22rem]" : "h-48"} />
       </Link>
       <div className={`flex flex-col ${featured ? "justify-center p-8 md:p-12" : "p-6"}`}>
         <span className="w-fit rounded-full bg-brand-700 px-3 py-1 text-sm font-semibold text-white">{c.client}</span>
-        <h3 className={`mt-4 font-bold leading-tight tracking-tight ${featured ? "text-3xl md:text-4xl" : "text-xl"}`}>
+        <H className={`mt-4 font-bold leading-tight tracking-tight ${featured ? "text-3xl md:text-4xl" : "text-xl"}`}>
           <Link href={`/case-studies/${c.slug}`}>{c.title}</Link>
-        </h3>
+        </H>
         <p className="mt-3 text-muted">{c.summary}</p>
         <ul className="mt-4 flex flex-wrap gap-2 text-xs font-medium text-brand-700">
           {c.services.map((s) => <li key={s} className="rounded-full bg-brand-50 px-3 py-1">{svcLabel(s)}</li>)}
         </ul>
         {c.metrics[0] && <p className="mt-5 text-sm text-muted"><b className="text-2xl text-ink">{c.metrics[0].value}</b> {c.metrics[0].label}</p>}
-        <Link href={`/case-studies/${c.slug}`} className="mt-5 font-semibold text-brand-700">Read the story <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
+        <Link href={`/case-studies/${c.slug}`} className="tap mt-5 inline-block font-semibold text-brand-700">Read the story <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
       </div>
     </article>
   );

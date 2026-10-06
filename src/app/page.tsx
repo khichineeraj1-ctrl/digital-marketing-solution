@@ -59,7 +59,7 @@ export default function Home() {
             <article key={p.key} className="reveal lift group flex flex-col rounded-3xl border border-slate-200 bg-white p-7">
               <h3 className="text-xl font-bold"><Link href={p.path}>{p.name}</Link></h3>
               <p className="mt-3 flex-1 text-muted">{p.lead}</p>
-              <Link href={p.path} className="mt-6 font-semibold text-brand-700">Learn more <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
+              <Link href={p.path} className="tap mt-6 inline-block font-semibold text-brand-700">Learn more <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
             </article>
           ))}
         </div>

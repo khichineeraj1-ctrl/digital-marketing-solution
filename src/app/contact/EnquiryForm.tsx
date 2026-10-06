@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SERVICES, SERVICE_FIELDS, SERVICE_META, type Field, type ServiceKey } from "@/content/enquiry";
 
 type Answers = Record<string, string | string[]>;
@@ -16,8 +16,10 @@ const Icon = ({ n }: { n: "pin" | "spark" | "chart" | "chat" | "search" }) => (
   </svg>
 );
 
-export function EnquiryForm({ initialService }: { initialService: string | null }) {
+export function EnquiryForm() {
   const router = useRouter();
+  const q = useSearchParams().get("service");
+  const initialService = SERVICES.some((s) => s.value === q) ? q : null;
   const topRef = useRef<HTMLDivElement>(null);
   const [service, setService] = useState<ServiceKey | null>((initialService as ServiceKey) || null);
   const [step, setStep] = useState(initialService ? (SERVICE_FIELDS[initialService as ServiceKey]?.length ? 1 : 2) : 0);
@@ -68,7 +70,7 @@ export function EnquiryForm({ initialService }: { initialService: string | null 
         {STEPS.map((s, i) => (
           <li key={s} className="flex flex-1 items-center gap-2" aria-current={i === step ? "step" : undefined}>
             <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-bold transition ${i <= step ? "bg-brand-700 text-white" : "bg-slate-200 text-slate-500"}`}>{i < step ? "✓" : i + 1}</span>
-            <span className={`hidden text-sm font-semibold sm:block ${i <= step ? "text-ink" : "text-slate-400"}`}>{s}</span>
+            <span className={`hidden text-sm font-semibold sm:block ${i <= step ? "text-ink" : "text-slate-600"}`}>{s}</span>
             {i < STEPS.length - 1 && <span className={`h-0.5 flex-1 rounded transition ${i < step ? "bg-brand-700" : "bg-slate-200"}`} />}
           </li>
         ))}

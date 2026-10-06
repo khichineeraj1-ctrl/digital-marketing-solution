@@ -16,7 +16,7 @@ export async function PerspectivesStrip() {
             <p className="text-xs font-bold uppercase tracking-widest text-brand-500">{p.category}</p>
             <h3 className="mt-3 text-xl font-bold leading-snug"><Link href={`/blog/${p.slug}`}>{p.title}</Link></h3>
             <p className="mt-3 line-clamp-3 text-muted">{p.description}</p>
-            <Link href={`/blog/${p.slug}`} className="mt-5 inline-block font-semibold text-brand-700">Read <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
+            <Link href={`/blog/${p.slug}`} className="tap mt-5 inline-block font-semibold text-brand-700">Read <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
           </article>
         ))}
       </div>

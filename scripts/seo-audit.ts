@@ -156,7 +156,8 @@ async function main() {
       const href = $(e).attr("href")!;
       const label = $(e).text().replace(/\s+/g, " ").trim();
       if (/^(mailto:|tel:|#)/.test(href)) return;
-      const url = new URL(href, loc);
+      let url: URL;
+      try { url = new URL(href, loc); } catch { add("ERROR", path, "invalid-href", href); return; }
       if (url.origin !== new URL(loc).origin) {
         if (!/noopener|nofollow/.test($(e).attr("rel") ?? "") && $(e).attr("target") === "_blank") add("WARN", path, "external-blank-no-noopener", href);
         return;

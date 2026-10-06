@@ -36,8 +36,12 @@ const menus: { label: string; items: Item[] }[] = [
 
 const logins = [
   { label: "Influencer Marketplace", desc: "Brands and creators log in here", href: marketplace.login },
-  { label: "Ads Management OS", desc: "Google and Meta ads", href: `${site.apps.ads}/login` },
-];
+  { label: "Ads Management OS", desc: "Google and Meta ads", href: site.apps.ads ? `${site.apps.ads}/login` : "" },
+].filter((l) => l.href);
+const joins = [
+  { label: "Join as brand", href: marketplace.brandSignup },
+  { label: "Join as creator", href: marketplace.creatorSignup },
+].filter((j) => j.href);
 
 const Chevron = () => (
   <svg className="chev h-4 w-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="m6 9 6 6 6-6" /></svg>
@@ -49,7 +53,7 @@ export function Header() {
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:p-2">Skip to content</a>
       <div className="sticky top-0 z-40 bg-[#f6f6f8]/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-          <Link href="/" className="text-xl font-extrabold sm:text-2xl tracking-tight text-brand-700">{site.name}</Link>
+          <Link href="/" className="tap text-xl font-extrabold sm:text-2xl tracking-tight text-brand-700">{site.name}</Link>
           <nav aria-label="Primary" className="hidden items-center gap-1 text-[15px] font-medium lg:flex">
             {menus.map((m) => (
               <div key={m.label} className="menu relative">
@@ -72,23 +76,22 @@ export function Header() {
             <Link href="/pricing" className="rounded-full px-4 py-2 hover:bg-white">Pricing</Link>
           </nav>
           <div className="flex items-center gap-2 text-sm font-semibold">
-            <div className="menu relative hidden lg:block">
+            {logins.length > 0 && <div className="menu relative hidden lg:block">
               <button type="button" aria-haspopup="true" className="flex items-center gap-1.5 rounded-full border border-brand-700/30 px-5 py-2.5 hover:bg-white">Log in<Chevron /></button>
               <div className="menu-panel absolute right-0 top-full z-50 w-72 pt-2">
                 <ul className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
                   {logins.map((l) => (
                     <li key={l.label}><a href={l.href} target="_blank" rel="noopener nofollow" className="block rounded-xl px-4 py-3 hover:bg-brand-50"><span className="font-semibold">{l.label} ↗</span><span className="block text-sm font-normal text-muted">{l.desc}</span></a></li>
                   ))}
-                  <li className="mt-1 grid grid-cols-2 gap-2">
-                    <a href={marketplace.brandSignup} target="_blank" rel="noopener nofollow" className="rounded-xl bg-brand-50 px-3 py-2.5 text-center font-semibold text-brand-700">Join as brand ↗</a>
-                    <a href={marketplace.creatorSignup} target="_blank" rel="noopener nofollow" className="rounded-xl bg-brand-50 px-3 py-2.5 text-center font-semibold text-brand-700">Join as creator ↗</a>
-                  </li>
+                  {joins.length > 0 && <li className="mt-1 grid grid-cols-2 gap-2">
+                    {joins.map((j) => <a key={j.label} href={j.href} target="_blank" rel="noopener nofollow" className="rounded-xl bg-brand-50 px-3 py-2.5 text-center font-semibold text-brand-700">{j.label} ↗</a>)}
+                  </li>}
                   <li><Link href="/google-business-profile-management/get-started" className="mt-1 block rounded-xl px-4 py-3 text-sm text-muted hover:bg-brand-50"><b className="text-ink">Business Profile?</b> No login needed — share access instead →</Link></li>
                 </ul>
               </div>
-            </div>
-            <Link href="/contact" className="rounded-full bg-brand-700 px-4 py-2.5 text-white transition hover:bg-brand-500 sm:px-6">Book a call</Link>
-            <MobileNav menus={menus} logins={logins.map((l) => ({ label: l.label, desc: l.desc, href: l.href }))} joins={[{ label: "Join as brand", href: marketplace.brandSignup }, { label: "Join as creator", href: marketplace.creatorSignup }]} />
+            </div>}
+            <Link href="/contact" className="rounded-full bg-brand-700 px-4 py-3 text-white transition hover:bg-brand-500 sm:px-6">Book a call</Link>
+            <MobileNav menus={menus} logins={logins.map((l) => ({ label: l.label, desc: l.desc, href: l.href }))} joins={joins} />
           </div>
         </div>
       </div>
@@ -101,7 +104,7 @@ function Col({ title, links }: { title: string; links: { label: string; path: st
     <div>
       <h2 className="text-sm font-semibold text-ink">{title}</h2>
       <ul className="mt-3 space-y-2 text-sm text-muted">
-        {links.map((l) => <li key={l.path}>{l.path.startsWith("http") ? <a href={l.path} target="_blank" rel="noopener nofollow" className="hover:text-brand-700 hover:underline">{l.label} ↗</a> : <Link href={l.path} className="hover:text-brand-700 hover:underline">{l.label}</Link>}</li>)}
+        {links.filter((l) => l.path).map((l) => <li key={l.path}>{l.path.startsWith("http") ? <a href={l.path} target="_blank" rel="noopener nofollow" className="hover:text-brand-700 hover:underline">{l.label} ↗</a> : <Link href={l.path} className="hover:text-brand-700 hover:underline">{l.label}</Link>}</li>)}
       </ul>
     </div>
   );

@@ -87,6 +87,13 @@ export const SERVICE_FIELDS: Record<ServiceKey, Field[]> = {
   other: [],
 };
 
+const SHORT: Record<string, string> = {
+  website: "Website", goal: "Goal", seo_budget: "Budget", focus: "Focus", site_type: "Site type", current: "SEO today",
+  locations: "Locations", profile_status: "Profile claimed", goals: "Wants", areas: "Areas", platforms: "Platforms",
+  campaign_budget: "Budget", niche: "Niche", cities: "Cities", timeline: "Start", ad_spend: "Ad spend", running: "Running ads today",
+};
+const KEY_FIELDS = ["seo_budget", "campaign_budget", "ad_spend", "locations", "goal"];
+
 export function isHighValue(service: string, details: Record<string, string | string[]> = {}): boolean {
   const fields = SERVICE_FIELDS[service as ServiceKey] ?? [];
   return fields.some((f) => {
@@ -104,11 +111,31 @@ export function describeDetails(l: { service: string; details?: Record<string, s
     const v = l.details?.[f.key];
     const vals = Array.isArray(v) ? v : v ? [v] : [];
     if (!vals.length) continue;
-    out.push({ label: f.label.replace(/\?$/, ""), value: vals.map((x) => f.options?.find((o) => o.value === x)?.label ?? x).join(", ") });
+    out.push({ label: SHORT[f.key] ?? f.label.replace(/\?$/, ""), value: vals.map((x) => f.options?.find((o) => o.value === x)?.label ?? x).join(", ") });
   }
   if (!l.details) {
     if (l.locations) out.push({ label: "Locations", value: LOCATIONS.find((x) => x.value === l.locations)?.label ?? l.locations });
     if (l.budget) out.push({ label: "Budget", value: BUDGETS.find((x) => x.value === l.budget)?.label ?? l.budget });
+  }
+  return out;
+}
+
+/** One or two headline facts for the compact lead row (budget, scale, goal). */
+export function keyFacts(l: Parameters<typeof describeDetails>[0]): string[] {
+  const fields = SERVICE_FIELDS[l.service as ServiceKey] ?? [];
+  const out: string[] = [];
+  for (const k of KEY_FIELDS) {
+    const f = fields.find((x) => x.key === k);
+    const v = l.details?.[k];
+    if (!f || !v) continue;
+    const first = Array.isArray(v) ? v[0] : v;
+    const label = f.options?.find((o) => o.value === first)?.label ?? first;
+    if (label && !/not sure/i.test(label)) out.push(k === "goal" ? `Goal: ${label}` : label);
+    if (out.length >= 2) break;
+  }
+  if (!out.length && l.details === undefined) {
+    if (l.budget && l.budget !== "unsure") out.push(BUDGETS.find((b) => b.value === l.budget)?.label ?? l.budget);
+    if (l.locations) out.push(`${LOCATIONS.find((x) => x.value === l.locations)?.label ?? l.locations} locations`);
   }
   return out;
 }

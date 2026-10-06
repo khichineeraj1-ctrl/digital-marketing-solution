@@ -23,9 +23,9 @@ export default async function Page() {
         {all.length === 0 ? <p className="text-center text-muted">Case studies are coming soon.</p> : (
           <CaseStudyFilter>
             <div className="mt-8 space-y-6">
-              {first && <div data-svc={first.services.join(" ")}><CaseStudyCard c={first} featured /></div>}
+              {first && <div data-svc={first.services.join(" ")}><CaseStudyCard c={first} featured level={2} /></div>}
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {rest.map((c) => <div key={c.slug} data-svc={c.services.join(" ")}><CaseStudyCard c={c} /></div>)}
+                {rest.map((c) => <div key={c.slug} data-svc={c.services.join(" ")}><CaseStudyCard c={c} level={2} /></div>)}
               </div>
             </div>
           </CaseStudyFilter>

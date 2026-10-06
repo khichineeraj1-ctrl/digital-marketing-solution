@@ -40,7 +40,7 @@ export default function Page() {
             <p className="mt-4 text-3xl font-bold">{p.from === 0 ? "Free" : `₹${p.from.toLocaleString("en-IN")}`}</p>
             <p className="text-sm text-muted">{p.unit}</p>
             <ul className="mt-5 flex-1 space-y-2 text-muted">{p.points.map((x) => <li key={x}>✓ {x}</li>)}</ul>
-            <Link href={`${products[p.product].path}`} className="mt-6 font-semibold text-brand-700 hover:underline">See details →</Link>
+            <Link href={`${products[p.product].path}`} className="tap mt-6 font-semibold text-brand-700 hover:underline">See details →</Link>
             <Link href={`/contact?service=${p.product}`} className="mt-3 rounded-full bg-brand-700 px-4 py-2.5 text-center font-semibold text-white hover:bg-brand-500">Get a quote</Link>
           </div>
         ))}
