@@ -5,7 +5,6 @@ import { Cta } from "@/components/Cta";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { organizationLd, websiteLd } from "@/lib/jsonld";
-import { products } from "@/content/products";
 import { site } from "@/config/site";
 import { CaseStudyStrip } from "@/components/CaseStudyStrip";
 import { Horizon } from "@/components/Horizon";
@@ -13,9 +12,8 @@ import { AiHumanSplit } from "@/components/AiHumanSplit";
 import { Approach } from "@/components/Approach";
 import { Diagnostic } from "@/components/Diagnostic";
 import { PerspectivesStrip } from "@/components/PerspectivesStrip";
-import { ProductTabs } from "@/components/ProductTabs";
+import { ServiceShowcase } from "@/components/ServiceShowcase";
 
-const pick = (p: { key: string; name: string; lead: string; path: string }) => ({ key: p.key, name: p.name, lead: p.lead, path: p.path });
 
 export const metadata = buildMetadata({
   title: "Consultative Growth Partner for the AI Era",
@@ -30,7 +28,6 @@ const faqs = [
 ];
 
 export default function Home() {
-  const list = [products.gbp, products.seo, products.influencer, products.ads];
   return (
     <>
       <Hero
@@ -45,26 +42,7 @@ export default function Home() {
       />
       <AiHumanSplit />
       <Approach />
-      <section className="mx-auto max-w-6xl px-4 py-14" aria-labelledby="products-h">
-        <h2 id="products-h" className="mb-8 text-center text-3xl font-bold tracking-tight md:text-4xl">Four ways we drive growth</h2>
-        <ProductTabs tabs={[
-          { ...pick(products.gbp), points: ["We reply to every review in your brand voice", "Weekly posts published for every location", "Share access — no new login to manage", "Audit and fix profile gaps"] },
-          { ...pick(products.seo), points: ["Technical audits and fixes", "Content and on-page strategy", "Link building and digital PR", "Reporting tied to leads"] },
-          { ...pick(products.influencer), points: ["Find verified creators by niche and city", "Briefs, approvals and protected payments", "Creators sign up free and get campaigns", "Track reach and link clicks"] },
-          { ...pick(products.ads), points: ["Google Ads and Meta Ads in one workspace", "Automation rules with budget guardrails", "City-wise targets and daily pacing", "Cross-channel reporting"] },
-        ]} />
-      </section>
-      <section className="mx-auto max-w-6xl px-4 pb-6" aria-label="Product overview">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {list.map((p) => (
-            <article key={p.key} className="reveal lift group flex flex-col rounded-3xl border border-slate-200 bg-white p-7">
-              <h3 className="text-xl font-bold"><Link href={p.path}>{p.name}</Link></h3>
-              <p className="mt-3 flex-1 text-muted">{p.lead}</p>
-              <Link href={p.path} className="tap mt-6 inline-block font-semibold text-brand-700">Learn more <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span></Link>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ServiceShowcase />
       <Diagnostic />
       <CaseStudyStrip />
       <PerspectivesStrip />
