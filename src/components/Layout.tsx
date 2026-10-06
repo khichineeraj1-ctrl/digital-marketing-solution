@@ -14,8 +14,8 @@ import { paths } from "@/lib/routes";
 type Item = { label: string; path: string; desc?: string };
 const menus: { label: string; items: Item[] }[] = [
   { label: "Products", items: [
-    { label: products.gbp.short, path: products.gbp.path, desc: "Reviews, posts and insights for every location" },
-    { label: products.influencer.short, path: products.influencer.path, desc: "Hire creators or get brand campaigns" },
+    { label: products.gbp.short, path: products.gbp.path, desc: "Google Business Profile, run for you" },
+    { label: products.influencer.short, path: products.influencer.path, desc: "Influencer marketplace for brands and creators" },
     { label: products.seo.short, path: products.seo.path, desc: "Technical, content and link building SEO" },
     { label: products.ads.short, path: products.ads.path, desc: "Google Ads and Meta Ads in one workspace" },
   ] },
@@ -36,7 +36,7 @@ const menus: { label: string; items: Item[] }[] = [
 ];
 
 const logins = [
-  { label: "Influencer Marketplace", desc: "Brands and creators log in here", href: marketplace.login },
+  { label: "Adtrafix Match", desc: "Brands and creators log in here", href: marketplace.login },
   { label: "Ads Management OS", desc: "Google and Meta ads", href: site.apps.ads ? `${site.apps.ads}/login` : "" },
 ].filter((l) => l.href);
 const joins = [
@@ -135,9 +135,9 @@ export async function Footer() {
 
       {/* link columns: accordions on phones, open columns on desktop */}
       <div className="mx-auto max-w-6xl border-t border-slate-200 px-4 py-2 lg:grid lg:grid-cols-6 lg:gap-8 lg:py-10">
-        <Col title="Business Profile" links={[{ label: "Overview", path: GBP }, ...gbpFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${GBP}/features/${f.slug}` }))]} />
+        <Col title="GBP OS" links={[{ label: "Overview", path: GBP }, ...gbpFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${GBP}/features/${f.slug}` }))]} />
         <Col title="SEO" links={[{ label: "Overview", path: SEO }, ...seoFeatures.slice(0, 5).map((f) => ({ label: f.name, path: `${SEO}/features/${f.slug}` }))]} />
-        <Col title="Influencers" links={[{ label: "Marketplace", path: INF }, { label: "For brands", path: `${INF}/for-brands` }, { label: "For creators", path: `${INF}/for-influencers` }, ...niches.slice(0, 4).map((n) => ({ label: `${n.name} influencers`, path: `${INF}/niches/${n.slug}` }))]} />
+        <Col title="Adtrafix Match" links={[{ label: "Marketplace", path: INF }, { label: "For brands", path: `${INF}/for-brands` }, { label: "For creators", path: `${INF}/for-influencers` }, ...niches.slice(0, 4).map((n) => ({ label: `${n.name} influencers`, path: `${INF}/niches/${n.slug}` }))]} />
         <Col title="Ads" links={[{ label: "Overview", path: ADS }, ...adsPlatforms.map((p) => ({ label: `${p.name} management`, path: `${ADS}/${p.slug}` })), ...adsFeatures.slice(0, 3).map((f) => ({ label: f.name, path: `${ADS}/features/${f.slug}` }))]} />
         <Col title="Cities" links={cities.slice(0, 7).map((c) => ({ label: `SEO services in ${c.name}`, path: `${SEO}/in/${c.slug}` }))} />
         <Col title="Company" links={[{ label: "About", path: "/about" }, { label: "Our experts", path: "/authors" }, { label: "Pricing", path: "/pricing" }, { label: "Client successes", path: "/case-studies" }, { label: "Blog", path: "/blog" }, { label: "Contact", path: "/contact" }]} />

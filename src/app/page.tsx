@@ -7,7 +7,7 @@ import { buildMetadata } from "@/lib/seo";
 import { organizationLd, websiteLd } from "@/lib/jsonld";
 import { site } from "@/config/site";
 import { CaseStudyStrip } from "@/components/CaseStudyStrip";
-import { Horizon } from "@/components/Horizon";
+import { ProductBanner } from "@/components/ProductBanner";
 import { AiHumanSplit } from "@/components/AiHumanSplit";
 import { Approach } from "@/components/Approach";
 import { Diagnostic } from "@/components/Diagnostic";
@@ -34,11 +34,10 @@ export default function Home() {
         big
         eyebrow="Consultative growth partner for the AI era"
         h1="Strategy from experts. Speed from AI."
-        mobileLead="Senior strategists plus AI-powered platforms for search, social and paid. Clear plans, measurable results."
-        lead="Senior consultants diagnose what is holding your growth back. Our AI-powered platforms and specialist teams do the heavy lifting across search, social and paid, so you get clarity, speed and results you can measure."
+        lead="Senior strategists plus AI-powered platforms for search, social and paid."
         primary={{ href: "/contact", label: "Book a growth consultation" }}
         secondary={{ href: "#diagnostic", label: "Take the 2-minute diagnostic" }}
-        visual={<Horizon />}
+        visual={<ProductBanner />}
       />
       <AiHumanSplit />
       <Approach />

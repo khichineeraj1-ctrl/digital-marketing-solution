@@ -3,22 +3,22 @@ import type { Faq } from "./types";
 export const products = {
   gbp: {
     key: "gbp",
-    name: "Google Business Profile Management",
-    short: "Business Profile Manager",
+    name: "GBP OS by Adtrafix",
+    short: "GBP OS by Adtrafix",
     path: "/google-business-profile-management",
     h1: "Google Business Profile Management Software",
-    metaTitle: "Google Business Profile Management Software",
+    metaTitle: "GBP OS: Google Business Profile Management",
     metaDescription: "Share access to your Google Business Profile and we manage reviews, posts, photos and insights for every location. No new login. Built for India.",
     lead: "Share access to your profile and we run the rest: audit, optimisation, review replies, posts and reporting for every location.",
     cta: "Get a free profile audit",
   },
   influencer: {
     key: "influencer",
-    name: "Influencer Marketplace",
-    short: "Influencer Marketplace",
+    name: "Adtrafix Match",
+    short: "Adtrafix Match",
     path: "/influencer-marketplace",
     h1: "Influencer Marketplace for Brands and Creators in India",
-    metaTitle: "Influencer Marketplace in India",
+    metaTitle: "Adtrafix Match: Influencer Marketplace India",
     metaDescription: "Find verified influencers by niche and city, run campaigns end to end and pay on delivery. Creators sign up free and receive brand campaigns.",
     lead: "Brands find verified creators by niche and city. Creators sign up free and start receiving campaigns.",
     cta: "Hire influencers",
@@ -72,8 +72,8 @@ export const adsFaqs: Faq[] = [
 
 export const pricing = [
   // PLACEHOLDER PRICES — replace with real plans before launch.
-  { product: "gbp", name: "Business Profile Manager", from: 999, unit: "per location / month", points: ["Review replies handled for you", "Post scheduler", "Insights and monthly reports", "Local SEO audit"] },
-  { product: "influencer", name: "Influencer Marketplace", from: 0, unit: "free for creators; brands pay per campaign", points: ["Free creator profile and media kit", "Brand discovery by niche and city", "Briefs, approvals, protected payments"] },
+  { product: "gbp", name: "GBP OS by Adtrafix", from: 999, unit: "per location / month", points: ["Review replies handled for you", "Post scheduler", "Insights and monthly reports", "Local SEO audit"] },
+  { product: "influencer", name: "Adtrafix Match", from: 0, unit: "free for creators; brands pay per campaign", points: ["Free creator profile and media kit", "Brand discovery by niche and city", "Briefs, approvals, protected payments"] },
   { product: "seo", name: "SEO Services", from: 29999, unit: "per month, scoped to your goals", points: ["Technical audit and fixes", "Content strategy and on-page SEO", "Link building and digital PR", "Monthly reporting on leads"] },
   { product: "ads", name: "Ads Management OS", from: 4999, unit: "per month", points: ["Google Ads and Meta Ads", "Automation rules and budget pacing", "Cross-channel reporting", "Unlimited ad accounts"] },
 ] as const;

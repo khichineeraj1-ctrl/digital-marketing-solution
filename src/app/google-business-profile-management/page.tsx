@@ -18,7 +18,7 @@ export default async function Page() {
   return (
     <>
       <Breadcrumbs trail={[{ name: p.short, path: p.path }]} />
-      <Hero eyebrow="Formerly Google My Business" h1={p.h1} lead={p.lead} primary={{ href: "/contact?service=gbp", label: p.cta }} secondary={{ href: `${p.path}/get-started`, label: "Connect your profile" }} />
+      <Hero eyebrow="GBP OS by Adtrafix" h1={p.h1} lead={p.lead} primary={{ href: "/contact?service=gbp", label: p.cta }} secondary={{ href: `${p.path}/get-started`, label: "Connect your profile" }} />
       <section className="mx-auto max-w-6xl px-4 py-10" aria-labelledby="how-h">
         <h2 id="how-h" className="text-3xl font-bold tracking-tight">Share access. We run the rest.</h2>
         <ol className="mt-8 grid gap-6 md:grid-cols-3">

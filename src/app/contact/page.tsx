@@ -12,7 +12,7 @@ export const metadata = buildMetadata({
 });
 
 const entry = [
-  { name: "Influencer Marketplace", note: "Brands and creators: log in or join.", href: marketplace.login },
+  { name: "Adtrafix Match", note: "Brands and creators: log in or join.", href: marketplace.login },
   { name: "Ads Management OS", note: "Existing customer? Open your workspace.", href: site.apps.ads ? `${site.apps.ads}/login` : "" },
 ].filter((e) => e.href);
 

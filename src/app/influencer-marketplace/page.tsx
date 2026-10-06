@@ -19,7 +19,7 @@ export default async function Page() {
   return (
     <>
       <Breadcrumbs trail={[{ name: p.short, path: p.path }]} />
-      <Hero eyebrow="Brands × Creators" h1={p.h1} lead={p.lead} primary={{ href: marketplace.brandSignup, label: "Join as a brand" }} secondary={{ href: marketplace.creatorSignup, label: "Join as a creator" }} />
+      <Hero eyebrow="Adtrafix Match" h1={p.h1} lead={p.lead} primary={{ href: marketplace.brandSignup, label: "Join as a brand" }} secondary={{ href: marketplace.creatorSignup, label: "Join as a creator" }} />
       <RelatedLinks heading="Two ways to use the marketplace" links={[
         { label: "For brands — hire creators", path: `${p.path}/for-brands`, note: "Find, brief and pay creators." },
         { label: "For influencers — get campaigns", path: `${p.path}/for-influencers`, note: "Free profile, brand briefs, reliable payouts." },

@@ -9,8 +9,8 @@ import { pricing, products } from "@/content/products";
 import { site } from "@/config/site";
 
 export const metadata = buildMetadata({
-  title: "Pricing for Business Profile, Influencer & Ads Tools",
-  description: "Simple pricing for Google Business Profile management, the influencer marketplace and the ads management OS. Start free and scale per location or account.",
+  title: "Pricing: GBP OS, Adtrafix Match, SEO and Ads",
+  description: "Simple pricing for GBP OS by Adtrafix, the Adtrafix Match influencer marketplace, SEO services and ads management. Get a quote that fits your goals.",
   path: "/pricing",
 });
 
