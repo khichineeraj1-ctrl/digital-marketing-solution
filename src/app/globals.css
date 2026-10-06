@@ -65,6 +65,10 @@ body { color: var(--color-ink); background: #f6f6f8; font-family: var(--font-san
   * { transition: none !important; }
 }
 
+/* hide the scrollbar on swipeable rails (still scrollable by touch / trackpad / keyboard) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* ── touch targets: grow the tappable area to ≥44px without changing layout ── */
 .tap { position: relative; }
 .tap::after { content: ""; position: absolute; inset: -12px -8px; }
