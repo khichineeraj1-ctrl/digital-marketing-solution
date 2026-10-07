@@ -8,7 +8,7 @@ import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
 import { JsonLd } from "@/components/JsonLd";
 import { softwareLd } from "@/lib/jsonld";
-import { getPlan } from "@/lib/pricing";
+import { publicFromPrice } from "@/lib/pricing";
 import { products, gbpFaqs } from "@/content/products";
 import { gbpFeatures, gbpIndustries } from "@/content/gbp";
 import { cities } from "@/content/cities";
@@ -41,7 +41,7 @@ export default async function Page() {
       {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
       <Faq faqs={ov?.faqs?.length ? ov.faqs : gbpFaqs} />
       <Cta href="/contact?service=gbp" label={p.cta} />
-      <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: (await getPlan("gbp")).from })} />
+      <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: await publicFromPrice("gbp") })} />
     </>
   );
 }
