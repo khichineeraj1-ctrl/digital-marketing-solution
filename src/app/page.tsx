@@ -19,8 +19,8 @@ export const revalidate = 60;
 
 
 export const generateMetadata = () => metaFor({
-  title: "Consultative Growth Partner for the AI Era",
-  description: "Senior strategists plus AI-powered platforms for SEO, Google Business Profile, influencer marketing and Google and Meta ads. Book a growth consultation.",
+  title: "Digital Marketing Solutions in India",
+  description: "Full-service digital marketing solutions in India: Google Business Profile, SEO, influencer marketing and Google & Meta ads. Strategist-led, AI-powered.",
   path: "/",
 });
 
@@ -36,7 +36,7 @@ export default async function Home() {
     <>
       <Hero
         big
-        eyebrow="Consultative growth partner for the AI era"
+        eyebrow="Digital marketing solutions for the AI era"
         h1={ov?.h1 ?? "Strategy from experts. Speed from AI."}
         lead={ov?.lead ?? "Senior strategists plus AI-powered platforms for search, social and paid."}
         primary={{ href: "/contact", label: "Book a growth consultation" }}

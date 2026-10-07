@@ -8,3 +8,4 @@ data/
 tsconfig.tsbuildinfo
 next-env.d.ts
 .DS_Store
+keyword-research/

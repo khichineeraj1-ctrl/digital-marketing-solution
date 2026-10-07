@@ -36,7 +36,7 @@ export default async function Page() {
       <RelatedLinks heading="Built for your industry" links={gbpIndustries.map((i) => ({ label: `For ${i.title}`, path: `${p.path}/for/${i.slug}` }))} />
       <RelatedLinks heading="Available across India" links={cities.map((c) => ({ label: `Profile management in ${c.name}`, path: `${p.path}/in/${c.slug}` }))} />
       <CaseStudyStrip service="gbp" heading="Results our clients see" />
-      <RelatedLinks heading="Pair it with" links={[{ label: "Local SEO services", path: "/seo-services/features/local-seo", note: "Rank your website alongside your profile" }, { label: "SEO services", path: "/seo-services" }]} />
+      <RelatedLinks heading="Pair it with" links={[{ label: "Google Business Profile Manager: the 2026 guide", path: "/blog/google-business-profile-manager", note: "What it is, how to access it and what it can do" }, { label: "Local SEO services", path: "/seo-services/features/local-seo", note: "Rank your website alongside your profile" }, { label: "SEO services", path: "/seo-services" }]} />
       {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
       <Faq faqs={ov?.faqs?.length ? ov.faqs : gbpFaqs} />
       <Cta href="/contact?service=gbp" label={p.cta} />
