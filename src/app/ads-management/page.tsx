@@ -8,7 +8,8 @@ import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
 import { JsonLd } from "@/components/JsonLd";
 import { softwareLd } from "@/lib/jsonld";
-import { products, adsFaqs, pricing } from "@/content/products";
+import { getPlan } from "@/lib/pricing";
+import { products, adsFaqs } from "@/content/products";
 import { site } from "@/config/site";
 import { adsPlatforms, adsFeatures, adsIndustries } from "@/content/ads";
 
@@ -31,7 +32,7 @@ export default async function Page() {
       {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
       <Faq faqs={ov?.faqs?.length ? ov.faqs : adsFaqs} />
       <Cta href="/contact?service=ads" label={p.cta} />
-      <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: pricing[2].from })} />
+      <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: (await getPlan("ads")).from })} />
     </>
   );
 }

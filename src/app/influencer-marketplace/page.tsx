@@ -8,7 +8,8 @@ import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
 import { JsonLd } from "@/components/JsonLd";
 import { softwareLd } from "@/lib/jsonld";
-import { products, pricing } from "@/content/products";
+import { getPlan } from "@/lib/pricing";
+import { products } from "@/content/products";
 import { marketplace } from "@/config/site";
 import { niches, influencerFaqs } from "@/content/influencer";
 import { cities } from "@/content/cities";
@@ -34,7 +35,7 @@ export default async function Page() {
       {ov?.blocks?.length ? <CustomBlocks blocks={ov.blocks} /> : null}
       <Faq faqs={ov?.faqs?.length ? ov.faqs : influencerFaqs} />
       <Cta href="/contact?service=influencer" label="Get a managed campaign" sub="Want us to plan and run the campaign for you? Tell us your goal." />
-      <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: pricing[1].from })} />
+      <JsonLd data={softwareLd({ name: p.name, description: p.metaDescription, path: p.path, fromPrice: (await getPlan("influencer")).from })} />
     </>
   );
 }
