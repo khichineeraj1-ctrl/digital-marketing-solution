@@ -12,6 +12,7 @@ export type CaseStudy = {
   title: string; metaTitle: string; description: string; summary: string; duration: string;
   challengeMd: string; solutionMd: string; resultsMd: string; metrics: Metric[];
   quote?: { text: string; name: string; role: string };
+  logo?: string; // file name of the uploaded client logo (see lib/logos.ts)
   status: "draft" | "published";
   sample: boolean; // illustrative content: noindex, not in sitemap, shows a banner
   published: string; modified: string;

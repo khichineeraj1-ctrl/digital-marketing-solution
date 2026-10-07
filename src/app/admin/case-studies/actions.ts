@@ -6,6 +6,7 @@ import { getCaseStudy, saveCaseStudy, deleteCaseStudy } from "@/lib/caseStudies"
 import { CS_SERVICES, type CaseStudy, type CsService, type Metric } from "@/content/caseStudies";
 import { isValidSlug, slugify } from "@/lib/slug";
 import { SEO_LIMITS } from "@/config/site";
+import { saveLogo, deleteLogo, sniff, MAX_LOGO_BYTES } from "@/lib/logos";
 
 export type FormState = { errors?: Record<string, string>; message?: string };
 const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
@@ -36,6 +37,7 @@ export async function saveCaseStudyAction(_: FormState, fd: FormData): Promise<F
     metaTitle: g("metaTitle") || title, description: g("description"), summary: g("summary"),
     challengeMd: md("challengeMd"), solutionMd: md("solutionMd"), resultsMd: md("resultsMd"),
     quote: quote.text ? quote : undefined,
+    logo: fd.get("removeLogo") === "on" ? undefined : existing?.logo,
     status: publish ? "published" : intent === "unpublish" ? "draft" : (existing?.status ?? "draft"),
     published: existing?.published ?? new Date().toISOString().slice(0, 10),
     modified: new Date().toISOString().slice(0, 10),
@@ -56,8 +58,16 @@ export async function saveCaseStudyAction(_: FormState, fd: FormData): Promise<F
     if (words(`${c.challengeMd} ${c.solutionMd} ${c.resultsMd}`) < 120) errors.challengeMd = "Write at least 120 words across challenge, solution and results";
     if (sample) errors.sample = "Untick 'sample' only for real client results. Sample stories stay hidden from Google.";
   }
-  if (Object.keys(errors).length) return { errors, message: "Please fix the highlighted fields." };
+  const file = fd.get("logo");
+  let newLogo: Buffer | undefined;
+  if (file instanceof File && file.size > 0) {
+    if (file.size > MAX_LOGO_BYTES) errors.logo = `Logo is ${Math.round(file.size / 1024)} KB. Keep it under ${MAX_LOGO_BYTES / 1024} KB.`;
+    else { const b = Buffer.from(await file.arrayBuffer()); if (!sniff(b)) errors.logo = "Use a PNG, JPG or WebP image (SVG isn't supported: export it as PNG)."; else newLogo = b; }
+  }
+  if (Object.keys(errors).length) return { errors, message: "Please fix the highlighted fields. If you chose a logo, select it again." };
 
+  if (newLogo) c.logo = await saveLogo(slug, newLogo);
+  if (existing?.logo && existing.logo !== c.logo) await deleteLogo(existing.logo);
   await saveCaseStudy(c);
   revalidatePath("/case-studies"); revalidatePath(`/case-studies/${slug}`); revalidatePath("/sitemap.xml"); revalidatePath("/");
   redirect(`/admin/case-studies?saved=${c.status}`);
@@ -66,6 +76,7 @@ export async function saveCaseStudyAction(_: FormState, fd: FormData): Promise<F
 export async function deleteCaseStudyAction(fd: FormData) {
   await requireAdmin();
   const slug = String(fd.get("slug"));
+  await deleteLogo((await getCaseStudy(slug))?.logo);
   await deleteCaseStudy(slug);
   revalidatePath("/case-studies"); revalidatePath(`/case-studies/${slug}`); revalidatePath("/sitemap.xml"); revalidatePath("/");
   redirect("/admin/case-studies?saved=deleted");

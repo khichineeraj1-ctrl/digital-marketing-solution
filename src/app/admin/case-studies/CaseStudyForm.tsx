@@ -3,6 +3,7 @@ import { useActionState, useState } from "react";
 import { saveCaseStudyAction, type FormState } from "./actions";
 import { CS_SERVICES, type CaseStudy } from "@/content/caseStudies";
 import { slugify } from "@/lib/slug";
+import { logoUrl } from "@/lib/logoPath";
 
 const field = "mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2";
 const Counter = ({ n, min, max }: { n: number; min: number; max: number }) => <span className={`text-xs ${n >= min && n <= max ? "text-green-700" : "text-amber-700"}`}>{n} / {min}–{max}</span>;
@@ -23,6 +24,7 @@ export function CaseStudyForm({ c }: { c?: CaseStudy }) {
   });
   const [services, setServices] = useState<string[]>(c?.services ?? []);
   const [sample, setSample] = useState(c?.sample ?? false);
+  const [preview, setPreview] = useState<string | undefined>();
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const locked = c?.status === "published" && !c.sample;
   const err = (k: string) => state.errors?.[k] && <p role="alert" className="mt-1 text-sm text-red-700">{state.errors[k]}</p>;
@@ -37,6 +39,21 @@ export function CaseStudyForm({ c }: { c?: CaseStudy }) {
         <div><label className="font-medium" htmlFor="client">Client name</label>
           <input id="client" name="client" value={client} className={field} onChange={(e) => { setClient(e.target.value); auto(e.target.value, title); }} />{err("client")}</div>
         <div><label className="font-medium" htmlFor="industry">Industry</label><input id="industry" name="industry" value={f.industry} onChange={set("industry")} className={field} /></div>
+      </div>
+      <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <label className="font-medium" htmlFor="logo">Client logo <span className="font-normal text-muted">(optional)</span></label>
+        <div className="mt-2 flex flex-wrap items-center gap-4">
+          <div className="grid h-20 w-32 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white p-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {preview ?? logoUrl(c?.logo) ? <img src={preview ?? logoUrl(c?.logo)} alt="" className="h-full w-full object-contain" /> : <span className="text-xs text-muted">No logo</span>}
+          </div>
+          <div className="min-w-0 flex-1">
+            <input id="logo" name="logo" type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => { const f = e.target.files?.[0]; setPreview(f ? URL.createObjectURL(f) : undefined); }} className="block w-full text-sm" />
+            <p className="mt-1 text-xs text-muted">PNG, JPG or WebP, up to 500 KB. A transparent PNG with the logo cropped tight works best. Every logo is shown in the same white tile, so all clients look consistent.</p>
+            {c?.logo && <label className="mt-2 flex items-center gap-2 text-sm"><input type="checkbox" name="removeLogo" /> Remove the current logo</label>}
+            {err("logo")}
+          </div>
+        </div>
       </div>
       <div><label className="font-medium" htmlFor="title">Headline (H1) — lead with the result</label>
         <input id="title" name="title" value={title} className={field} onChange={(e) => { setTitle(e.target.value); auto(client, e.target.value); }} />{err("title")}</div>

@@ -49,7 +49,7 @@ export default async function Page({ params }: P) {
       {c.sample && <p role="note" className="mx-auto mt-4 max-w-6xl rounded-xl bg-amber-100 px-4 py-3 text-sm font-medium text-amber-900">Sample content for layout preview — this is not a real client or real results. It is hidden from search engines.</p>}
       <article>
         <header className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-10 md:grid-cols-2">
-          <Cover c={c} className="h-64 rounded-3xl md:h-96" />
+          <Cover c={c} large className="h-64 rounded-3xl md:h-96" />
           <div>
             <span className="rounded-full bg-brand-700 px-3 py-1 text-sm font-semibold text-white">{c.client}</span>
             <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">{c.title}</h1>
