@@ -31,6 +31,7 @@ export async function allRoutes(): Promise<RouteEntry[]> {
     { path: INF, priority: 0.9, changeFrequency: "weekly" },
     { path: ADS, priority: 0.9, changeFrequency: "weekly" },
     { path: SEO, priority: 0.9, changeFrequency: "weekly" },
+    { path: "/social-media-management", priority: 0.8, changeFrequency: "monthly" },
     { path: "/pricing", priority: 0.8, changeFrequency: "monthly" },
     { path: "/blog", priority: 0.7, changeFrequency: "weekly" },
     { path: "/case-studies", priority: 0.8, changeFrequency: "weekly" },
